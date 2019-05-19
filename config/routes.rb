@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     #   end
     # end
 
-  constraints subdomain: 'api' do
+  constraints subdomain: 'api', defaults: { format: 'json' } do
     scope module: :v1, constraints: ApiVersion.new('v1', true) do
       resources :users
     end

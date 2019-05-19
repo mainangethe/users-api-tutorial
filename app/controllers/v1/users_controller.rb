@@ -1,9 +1,10 @@
 class V1::UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
+  before_action :authenticate, except: [:create]
 
   # GET /api/v1/users
   def index
-    @users = User.all
+    @users = V1::User.all
 
     render json: @users
   end
@@ -15,10 +16,10 @@ class V1::UsersController < ApplicationController
 
   # POST /api/v1/users
   def create
-    @user = User.new(user_params)
+    @user = V1::User.new(user_params)
 
     if @user.save
-      render json: @user, status: :created, location: @user
+      render json: @user, status: :created, location: user_url(@user.id)
     else
       render json: @user.errors, status: :unprocessable_entity
     end
@@ -41,7 +42,7 @@ class V1::UsersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find(params[:id])
+      @user = V1::User.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
